@@ -30,8 +30,10 @@ function App() {
   const handleTaskDelete = (taskId) => {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(updatedTasks);
-    if (currentTask && currentTask.id === taskId) {
+    if (updatedTasks.length === 0) {
       setCurrentTask(null);
+    } else if (currentTask && currentTask.id === taskId) {
+      setCurrentTask(updatedTasks[0]);
     }
   };
 
@@ -155,7 +157,7 @@ function App() {
         </div>
       </div>
       <div className="task-details">
-        {currentTask && (
+        {currentTask && tasks.length > 0 && (
           <>
             <h2>{currentTask.title}</h2>
             <input
@@ -164,7 +166,9 @@ function App() {
               value={newEntry}
               onChange={(e) => setNewEntry(e.target.value)}
             />
-            <button onClick={handleNewEntrySubmit}>Add</button>
+            <button onClick={handleNewEntrySubmit}>
+              {currentTask.type === 'weather' ? 'Get Weather' : 'Get Movie Details'}
+            </button>
             {currentTask.entries.map((entry, index) => (
               <div key={index} className="entry">
                 <input
